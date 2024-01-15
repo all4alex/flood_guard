@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 class FloodAlertModel {
   final String? id;
   final String? title;
@@ -21,16 +18,15 @@ class FloodAlertModel {
     };
   }
 
-  factory FloodAlertModel.fromMap(Map<String, Object?> map) {
-    return FloodAlertModel(
-      id: map['id'] as String,
-      title: map['title'] as String,
-      message: map['message'] as String,
-      location: map['location'] as String,
-      timestamp: map['timestamp'] as int,
-    );
-  }
-
-  factory FloodAlertModel.fromJson(dynamic source) =>
-      FloodAlertModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  FloodAlertModel.fromJson(Map<String, Object?> json)
+      : this(
+          id: json['id'] != null ? json['id'] as String : 'No Data',
+          title: json['title'] != null ? json['title'] as String : 'No Data',
+          message:
+              json['message'] != null ? json['message'] as String : 'No Data',
+          location:
+              json['location'] != null ? json['location'] as String : 'No Data',
+          timestamp:
+              json['timestamp'] != null ? json['timestamp'] as int : 0000,
+        );
 }
