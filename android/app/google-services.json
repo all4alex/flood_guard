@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "856711818689",
+    "project_id": "floodguard-974ca",
+    "storage_bucket": "floodguard-974ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856711818689:android:f9b280b35ba0c346315340",
+        "android_client_info": {
+          "package_name": "com.example.flood_guard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7NPnbfC2ebN_cBYWbZbaUOn7ASknIDuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856711818689:android:c879e3c951961150315340",
+        "android_client_info": {
+          "package_name": "com.example.noti_flood_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7NPnbfC2ebN_cBYWbZbaUOn7ASknIDuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
