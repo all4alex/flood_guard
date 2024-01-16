@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flood_guard/app/app_toast.dart';
 import 'package:flood_guard/flood_alert_model.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,6 +12,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
   FloodAlertModel alertModel = FloodAlertModel();
   final floodAlertRef = FirebaseFirestore.instance
       .collection('FloodAlerts')
@@ -33,6 +39,57 @@ class _HomeScreenState extends State<HomeScreen> {
     }).catchError((error) {
       AppToast.showErrorMessage(
           context, 'Something went wrong. Please try again.');
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initFirebaseFCM();
+  }
+
+  void initFirebaseFCM() async {
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+    await FirebaseMessaging.instance.subscribeToTopic('floodAlerts');
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification!;
+      AndroidNotification? android = message.notification!.android;
+
+      // If `onMessage` is triggered with a notification, construct our own
+      // local notification to show to users using the created channel.
+      if (notification != null && android != null) {
+        FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+          RemoteNotification notification = message.notification!;
+          AndroidNotification? android = message.notification!.android;
+
+          // If `onMessage` is triggered with a notification, construct our own
+          // local notification to show to users using the created channel.
+          if (notification != null && android != null) {
+            // notification.hashCode,
+            //     notification.title,
+            //     notification.body,
+            AppToast.showAlertMessage(
+                context, '${notification.title}', '${notification.body}');
+          }
+        });
+      }
     });
   }
 
